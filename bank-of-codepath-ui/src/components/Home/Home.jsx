@@ -18,7 +18,6 @@ export default function Home(props) {
         props.setTransactions(transactions => [...transactions, response.data.transaction]);
         props.setNewTransactionForm({category:"",description:"",amount:0});
         props.setIsCreating(false);
-        console.log(props.transactions);
       },
       (err) =>{
         props.setError(err);
@@ -35,7 +34,7 @@ export default function Home(props) {
   }
 
   React.useEffect(() =>{
-    //props.setIsLoading(true);
+    props.setIsLoading(true);
     axios.get("http://localhost:3001/bank/transactions").then(
       (response) =>{
         props.setTransactions(response.data.transactions)
@@ -58,7 +57,7 @@ export default function Home(props) {
   return (
     <div className="home">
       <AddTransaction isCreating={props.isCreating} setIsCreating={props.setIsCreating} form={props.newTransactionForm} setForm={props.setNewTransactionForm} handleOnSubmit={handleOnSubmitNewTransaction}/>
-      {props.isLoading ? <h1>Loading...</h1> : <BankActivity transactions={filteredTransactions}/>}
+      {props.isLoading ? <h1>Loading...</h1> : <BankActivity transactions={filteredTransactions} transfers={props.transfers}/>}
       {props.error ? <h2 className="error">{props.error}</h2> : null}
     </div>
   )

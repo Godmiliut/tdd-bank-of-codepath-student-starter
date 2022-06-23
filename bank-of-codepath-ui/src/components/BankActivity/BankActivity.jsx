@@ -1,8 +1,9 @@
 import * as React from "react"
 import { formatDate, formatAmount } from "../../utils/format"
+import { Link } from "react-router-dom"
 import "./BankActivity.css"
 
-export default function BankActivity() {
+export default function BankActivity(props) {
   return (
     <div className="bank-activity">
       <h2>Transactions</h2>
@@ -13,7 +14,7 @@ export default function BankActivity() {
           <span className="col x2">Amount</span>
           <span className="col x15">Date</span>
         </div>
-        {/* */}
+        <div className="transaction-row">{props.transactions ? props.transactions.map((transaction,index) => (<TransactionRow key={index} transaction={transaction} />)) : null}</div>
       </div>
 
       <h2>Transfers</h2>
@@ -24,14 +25,16 @@ export default function BankActivity() {
           <span className="col x2">Amount</span>
           <span className="col x15">Date</span>
         </div>
-        {/* */}
+        <div className="transfer-row">{props.transfers ? props.transfers.map((transfer,index) => (<TransferRow key={index} transfer={transfer} />)) : null}</div>
       </div>
     </div>
   )
 }
 
 export function TransactionRow({ transaction = {} }) {
+  let link="/transactions/" + transaction.id;
   return (
+    <Link to={link}>
     <div className="table-row transaction-row">
       <span className="col x4">
         <Arrow amount={transaction.amount} />
@@ -41,6 +44,7 @@ export function TransactionRow({ transaction = {} }) {
       <span className="col x2">{formatAmount(transaction.amount)}</span>
       <span className="col x15">{formatDate(transaction.postedAt)}</span>
     </div>
+    </Link>
   )
 }
 
